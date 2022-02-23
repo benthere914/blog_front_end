@@ -1,0 +1,6 @@
+.authDropDown{
+    border: solid white 1px;
+    display: flex;
+    position: absolute;
+    right: 100px;
+}

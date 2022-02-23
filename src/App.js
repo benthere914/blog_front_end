@@ -1,19 +1,24 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./components/home";
-import Navbar from "./components/navbar";
+import NavBar from "./components/navbar";
+import SignUp from './components/signup';
+import LogIn from './components/login';
 function App() {
 
   return (
     <div className="App">
         <BrowserRouter>
-            <Navbar/>
+            <NavBar/>
             <Switch>
                 <Route path='/' exact={true}>
                     <Home/>
                 </Route>
-                <Route path={'/other'}>
-                    <p>other</p>
+                <Route path={'/auth/signUp'}>
+                    <SignUp/>
+                </Route>
+                <Route path={'/auth/login'}>
+                    <LogIn/>
                 </Route>
             </Switch>
         </BrowserRouter>
