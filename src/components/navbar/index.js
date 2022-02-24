@@ -1,7 +1,7 @@
 import './index.css';
 import { Navbar, Container, Nav, Dropdown } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-const NavBar = () => {
+const NavBar = ({loggedIn}) => {
     const history = useHistory();
 	return (
 		<>
@@ -14,8 +14,16 @@ const NavBar = () => {
                             <Dropdown>
                                 <Dropdown.Toggle variant='dark'>Auth</Dropdown.Toggle>
                                 <Dropdown.Menu variant='dark'>
-                                    <Dropdown.Item onClick={() => {history.push('/auth/signup')}}>Sign Up</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => {history.push('/auth/login')}}>Log In</Dropdown.Item>
+                                    {loggedIn?
+                                    <>
+                                        <Dropdown.Item onClick={() => {history.push('/auth/signup')}}>Log out</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {history.push('/auth/login')}}>My account</Dropdown.Item>
+                                    </>:
+                                    <>
+                                        <Dropdown.Item onClick={() => {history.push('/auth/signup')}}>Sign Up</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => {history.push('/auth/login')}}>Log In</Dropdown.Item>
+                                    </>
+                                    }
                                 </Dropdown.Menu>
                             </Dropdown>
                         </div>

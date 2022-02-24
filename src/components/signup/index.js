@@ -8,16 +8,22 @@ const SignUp = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const signUpFunc = async () => {
+        await axios.post('http://127.0.0.1:5000/auth/signup', {username, email, password});
+    }
+
+    const loginFunc = async () => {
+        await axios.post('http://127.0.0.1:5000/auth/login', {email, password})
+    }
     const clickHandler = () => {
         console.log('got here')
         if (password !== confirmPassword) {
             // show user error
             return
         }
-        const func = async () => {
-            const result = await axios.post('http://blog-env.eba-34uah8ca.us-west-2.elasticbeanstalk.com/users/', {username, email, password});
-        }
-        func();
+
+        signUpFunc();
+        loginFunc();
 
     }
     return (
