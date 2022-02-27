@@ -10,14 +10,27 @@ function App() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [user, setUser] = useState({})
     const [token, setToken] = useState('');
+    const getNewToken = async (oldToken) => {
+        const result = await axios.post('http://blog-env.eba-34uah8ca.us-west-2.elasticbeanstalk.com/auth/refresh', {token: oldToken})
+        setToken(result?.data?.access_token)
+    }
+    const getUser = async () => {
+        localStorage.setItem('token', token)
+        const result = await axios.get('http://blog-env.eba-34uah8ca.us-west-2.elasticbeanstalk.com/users/me', {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
+        setUser(result?.data?.user)
+        setLoggedIn(true)
+    }
+
     useEffect(() => {
-        const getUser = async () => {
-            const result = await axios.get('http://blog-env.eba-34uah8ca.us-west-2.elasticbeanstalk.com/users/me', {headers: {Authorization: `Bearer ${token}`}})
-            setUser(result?.data?.user)
-            setLoggedIn(true)
-        }
-        getUser()
+        if (token) getUser()
     }, [token])
+
+    useEffect(() => {
+        const oldToken = localStorage.getItem('token')
+        if (!!oldToken) getNewToken(oldToken)
+    }, [])
+
+
 
   return (
     <div className="App">

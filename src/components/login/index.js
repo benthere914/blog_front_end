@@ -9,6 +9,8 @@ const LogIn = ({setToken}) => {
     const [password, setPassword] = useState('');
     const loginFunc = async () => {
         const result = await axios.post('http://blog-env.eba-34uah8ca.us-west-2.elasticbeanstalk.com/auth/login', {email, password})
+        // const result = await axios.post('http://127.0.0.1:5000/auth/login', {email, password})
+        console.log(result)
         setToken(result?.data?.access_token)
         history.push('/')
     }
