@@ -1,24 +1,26 @@
 import axios from 'axios'
 import { useState } from 'react'
 import { Alert, Button } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import './index.css'
 
-const SignUp = () => {
+const SignUp = ({ setToken }) => {
+    const history = useHistory();
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const clickHandler = () => {
-        console.log('got here')
-        if (password !== confirmPassword) {
-            // show user error
-            return
-        }
-        const func = async () => {
-            const result = await axios.post('http://blog-env.eba-34uah8ca.us-west-2.elasticbeanstalk.com/users/', {username, email, password});
-        }
-        func();
 
+    const signUpFunc = async () => {
+        await axios.post('http://blog-env.eba-34uah8ca.us-west-2.elasticbeanstalk.com/auth/signup', {username, email, password});
+        const result = await axios.post('http://blog-env.eba-34uah8ca.us-west-2.elasticbeanstalk.com/auth/login', {email, password})
+        await setToken(result?.data?.access_token)
+    }
+
+
+    const clickHandler = () => {
+        signUpFunc();
+        history.push('/');
     }
     return (
         <>
