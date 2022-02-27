@@ -2,13 +2,17 @@ import './index.css'
 import axios from 'axios'
 import { useState } from 'react'
 import { Alert, Button } from 'react-bootstrap'
-const LogIn = () => {
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
+const LogIn = ({setToken}) => {
+    const history = useHistory()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const loginFunc = async () => {
-        await axios.post('http://127.0.0.1:5000/auth/login', {email, password})
-        const loggedin = await axios.get('http://127.0.0.1:5000/auth/logged_in')
+        const result = await axios.post('http://blog-env.eba-34uah8ca.us-west-2.elasticbeanstalk.com/auth/login', {email, password})
+        setToken(result?.data?.access_token)
+        history.push('/')
     }
+
     return (
         <>
             <div className='authForm'>

@@ -8,28 +8,32 @@ import LogIn from './components/login';
 import { useEffect, useState } from 'react';
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [user, setUser] = useState({})
+    const [token, setToken] = useState('');
     useEffect(() => {
-        const func = async () => {
-            const result = await axios.get('http://127.0.0.1:5000/auth/logged_in');
-            console.log(result?.data['logged in'])
-            await setLoggedIn(result?.data['logged in'])
+        const getUser = async () => {
+            const result = await axios.get('http://blog-env.eba-34uah8ca.us-west-2.elasticbeanstalk.com/users/me', {headers: {Authorization: `Bearer ${token}`}})
+            setUser(result?.data?.user)
+            setLoggedIn(true)
         }
-        func();
-    }, [])
+        getUser()
+    }, [token])
+
   return (
     <div className="App">
         <BrowserRouter>
             <p>logged in: {loggedIn?"true": "false"}</p>
+            <p>{user?.username} {user?.email}</p>
             <NavBar loggedIn={loggedIn}/>
             <Switch>
                 <Route path='/' exact={true}>
                     <Home/>
                 </Route>
                 <Route path={'/auth/signUp'}>
-                    <SignUp/>
+                    <SignUp setToken={setToken}/>
                 </Route>
-                <Route path={'/auth/login'}>
-                    <LogIn/>
+                <Route path={'/auth/login'} >
+                    <LogIn setToken={setToken}/>
                 </Route>
             </Switch>
         </BrowserRouter>
